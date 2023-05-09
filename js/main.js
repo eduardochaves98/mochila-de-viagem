@@ -1,6 +1,6 @@
 const form = document.getElementById('novoItem');
 const table = document.getElementById('listaObjetos');
-const itemStorage = JSON.parse(localStorage.getItem("itens")) || [];
+let itemStorage = JSON.parse(localStorage.getItem("itens")) || [];
 
 if(itemStorage.length > 0){
     itemStorage.forEach(e => adicionarObjeto(e))
@@ -41,10 +41,21 @@ function adicionarObjeto(item) {
     numeroItem.textContent = item.quantidade;
     novoItem.appendChild(numeroItem);
     novoItem.innerHTML += item.nome;
+    novoItem.appendChild(botaoDeleta(novoItem, item.nome));
     table.appendChild(novoItem);
 }
 
-
+function botaoDeleta(elemento, nome){
+    const elementoBotao = document.createElement("button")
+    elementoBotao.innerText = "X";
+    elementoBotao.addEventListener("click", (event) =>{
+        elemento.remove();
+        itemStorage = itemStorage.filter(i => i.nome != nome);
+        console.log(itemStorage);
+        localStorage.setItem("itens",JSON.stringify(itemStorage));
+    })
+    return elementoBotao;
+}
 
 
 
